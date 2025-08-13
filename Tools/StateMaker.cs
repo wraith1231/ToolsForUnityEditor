@@ -38,14 +38,20 @@ public class P_State_State : IState
 
     #endregion
 
-    [MenuItem("Tools/Make Player Super State")]
-    static void CustomMenu()
+    [MenuItem("Tools/State Maker/Make Player State")]
+    static void CustomPlayerMenu()
     {
-        EditorWindow.GetWindow(typeof(StateMakerWindow), false, "Player Super State Maker");
+        EditorWindow.GetWindow(typeof(PlayerStateMakerWindow), false, "Player Super State Maker");
+    }
+
+    [MenuItem("Tools/State Maker/Make Enemy State")]
+    static void CustomEnemyMenu()
+    {
+        //TODO : Enemy는 Behavior Tree로 만들건데 아직 노드 구성 어떻게 할지 안정함, IState 재활용 안할거라 일단 따로 뺌
     }
 }
 
-public class StateMakerWindow : EditorWindow
+public class PlayerStateMakerWindow : EditorWindow
 {
     string _stateName = "";
     string _valList = "";
