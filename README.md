@@ -7,6 +7,7 @@ State Maker
 해당 에디터는 유니티 에디터 상단 Tools/Make Player Super State Maker...는 수정하겠습니다. 아무튼 거기서 생성하면 위 폴더에 P + 상태 이름 + State.cs 파일이 생성됩니다. 이 부분도 OnGUI 함수의 GUILayout.Button 부분들을 변경해주시면 됩니다.
 상속받고있는 IState는 만들어주셔야합니다만, 기본으로 플레이어 상태 기계를 인자로 받는걸 보시면 아시겠지만 interface가 아니라 abstract 클래스입니다. Enter, Exit, Update는 abstract로 생성해두시고 생성자만 플레이어 상태 기계를 인자로 받어서 저장하게 해두시면 됩니다. 필요없으시면 삭제해주시고 state maker의 템플릿 부분도 생성자에 인자를 안받게 수정해주시면 됩니다.
 이후 필요하면 수정 예정
+25-08-13 약간 수정, 지금 State 변경을 어떻게 처리할지 고민중이라 그에 따라 더 변할 수 있습니다.
 
 Attack Data Editor
 공격 데이터를 담은 Json 파일을 에디터에서 수정할 수 있게 만들었습니다. AttackData 클래스가 json의 각 요소들입니다. Container는 그냥 wrapper. EnumExtensions에 IsDefined 정의한 것도 제가 처음에 enum 말고 string으로 하다가 enum으로 바꾼 놈들 때문에 썼습니다.
