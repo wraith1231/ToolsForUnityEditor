@@ -8,6 +8,7 @@ public class AnimationEditor : EditorWindow
     bool _pos;
     bool _loop;
     bool _jitter;
+    bool _height;
     ModelImporterAnimationType _type;
 
     [UnityEditor.MenuItem("Tools/Animation Editor")]
@@ -28,10 +29,11 @@ public class AnimationEditor : EditorWindow
             _loop = EditorGUILayout.Toggle("Loop Time", _loop);
             _pos = EditorGUILayout.Toggle("Lock Position XZ", _pos);
             _rotate = EditorGUILayout.Toggle("Lock Rotate", _rotate);
+            _height = EditorGUILayout.Toggle("Lock Root Height Y", _height);
 
             if (GUILayout.Button("Apply Animation Setting"))
             {
-                WorkAnimation(_importer, _type, _jitter, _rotate, _pos, _loop);
+                WorkAnimation(_importer, _type, _jitter, _rotate, _pos, _loop, _height);
             }
         }
         if (GUILayout.Button("Open File"))
@@ -55,17 +57,17 @@ public class AnimationEditor : EditorWindow
         }
     }
 
-    private void WorkAnimation(ModelImporter importer, ModelImporterAnimationType type, bool jitter, bool rotate, bool pos, bool loop)
+    private void WorkAnimation(ModelImporter importer, ModelImporterAnimationType type, bool jitter, bool rotate, bool pos, bool loop, bool height)
     {
         importer.animationType = type;
-        //»ÁµÈ∏≤ «ˆªÛ πÊ¡ˆøÎ
+        //ÌùîÎì§Î¶º ÌòÑÏÉÅ Î∞©ÏßÄÏö©
         if (jitter == true)
         {
             importer.bakeIK = jitter;
             importer.animationPositionError = 0f;
             importer.animationRotationError = 0f;
             importer.animationScaleError = 0f;
-            //off∑Œ «œ∏È º∫¥… øµ«‚ ¿÷¥Îº≠ ¿œ¥‹ Ω·µŒ±‰ «ﬂ¥¬µ• ≤®µ“
+            //offÎ°ú ÌïòÎ©¥ ÏÑ±Îä• ÏòÅÌñ• ÏûàÎåÄÏÑú ÏùºÎã® Ïç®ÎëêÍ∏¥ ÌñàÎäîÎç∞ Í∫ºÎë†
             //importer.animationCompression = ModelImporterAnimationCompression.Off;
         }
 
@@ -82,6 +84,7 @@ public class AnimationEditor : EditorWindow
             clips[i].lockRootRotation = rotate;
             clips[i].lockRootPositionXZ = pos;
             clips[i].loopTime = loop;
+            clips[i].lockRootHeightY = height;
 
             clips[i].keepOriginalOrientation = true;
         }
