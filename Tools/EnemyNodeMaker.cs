@@ -7,14 +7,9 @@ using UnityEngine;
 
 public class EnemyNodeMaker : EditorWindow
 {
-    public static string NodePath = "Assets/Scripts/Enemy/Behaviors/Logics/Leafs";
-    public static string NodeEditorPath = "Assets/Scripts/Enemy/Behaviors/Logics/LeafForEditor/";
+    public static string NodePath = "Assets/Scripts/Enemy/Behaviors/Logics/Leafs/";
 
-    private ReorderableList _reorderableList;
-    private int _selected = -1;
-    private Vector2 _scrollPosition;
-
-    private List<string> _nodeList;
+    private string _nodeName = "";
 
     [MenuItem("Tools/State Maker/Make Enemy Behavior Tree Node")]
     static void CustomPlayerMenu()
@@ -22,99 +17,78 @@ public class EnemyNodeMaker : EditorWindow
         EditorWindow.GetWindow(typeof(EnemyNodeMaker), false, "Enemy Behavior Node Maker");
     }
 
-    private void LoadNodeList()
-    {
-        string[] nodes = Directory.GetFiles(NodePath, "*Node.cs");
-
-        _nodeList = new List<string>(nodes);
-
-        int count = _nodeList.Count;
-        for(int i = 0; i < count; i++)
-        {
-            _nodeList[i] = Path.GetFileName(_nodeList[i]);
-            Debug.Log(_nodeList[i]);
-        }
-    }
-    private void LoadNode()
-    {
-
-    }
-
-    private void SaveNodesAll()
-    {
-
-    }
-
-    private void OnEnable()
-    {
-        LoadNodeList();
-    }
-
     private void OnGUI()
     {
-        //toolbar
-        GUILayout.BeginHorizontal();
+        _nodeName = EditorGUILayout.TextField("Node Name(Only Node name, ex:Attack)", _nodeName);
 
-        //Left List
-        GUILayout.BeginVertical(GUILayout.Width(position.width * 0.3f));
-        //_reorderableList.DoLayoutList();
-        GUILayout.EndVertical();
-
-        //Right Data
-        GUILayout.BeginVertical();
-        //_scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
-        //if (_selected >= 0 && _selected < _container.AttackData.Count)
-        //{
-        //    AttackData selected = _container.AttackData[_selected];
-        //    DrawAttackData(selected);
-        //}
-        GUILayout.EndScrollView();
-        GUILayout.EndVertical();
-
-        GUILayout.EndHorizontal();
-    }
-
-    private void CreateList()
-    {
-        /*Debug.Log("Create!!");
-        _reorderableList = new ReorderableList(_container.AttackData, typeof(AttackData), true, true, true, true);
-
-        _reorderableList.drawHeaderCallback = (Rect rect) =>
+        if(GUILayout.Button("Make Leaf"))
         {
-            EditorGUI.LabelField(rect, "Attack List");
-        };
+            if (_nodeName.Length == 0)
+            {
+                Debug.LogError("Must Input Node Name");
+                return;
+            }
 
-        _reorderableList.drawElementCallback = (Rect rect, int index, bool isActive, bool isFocused) =>
+            string path = EnemyNodeMaker.NodePath + $"{_nodeName}Node.cs";
+            if (File.Exists(path))
+            {
+                EditorUtility.DisplayDialog("Warning", "File Already Exists", "OK");
+                return;
+            }
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    string data = EnemyNodeMaker.LeafNodeTemplate;
+                    data = data.Replace("_Name_", _nodeName);
+
+                    Debug.Log(data);
+                    writer.WriteLine(data);
+                }
+
+                AssetDatabase.Refresh();
+
+                Debug.Log($"{_nodeName}Node.cs Made!");
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
+        if(GUILayout.Button("Make Condition"))
         {
-            AttackData data = _container.AttackData[index];
-            rect.y += 2;
-            EditorGUI.LabelField(new Rect(rect.x, rect.y, rect.width, EditorGUIUtility.singleLineHeight), data.ID.ToString());
-        };
+            if (_nodeName.Length == 0)
+            {
+                Debug.LogError("Must Input Node Name");
+                return;
+            }
 
-        _reorderableList.onSelectCallback = (ReorderableList list) =>
-        {
-            _selected = list.index;
-        };
+            string path = EnemyNodeMaker.NodePath + $"{_nodeName}Node.cs";
+            if (File.Exists(path))
+            {
+                EditorUtility.DisplayDialog("Warning", "File Already Exists", "OK");
+                return;
+            }
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(path))
+                {
+                    string data = EnemyNodeMaker.ConditionNodeTemplate;
+                    data = data.Replace("_Name_", _nodeName);
 
-        _reorderableList.onAddCallback = (ReorderableList list) =>
-        {
-            AttackData data = new AttackData();
-            data.ID = _container.AttackData.Count;
-            _container.AttackData.Add(data);
-            list.index = _container.AttackData.Count - 1;
-            _selected = list.index;
-        };
+                    Debug.Log(data);
+                    writer.WriteLine(data);
+                }
 
-        _reorderableList.onRemoveCallback = (ReorderableList list) =>
-        {
-            int index = list.index;
+                AssetDatabase.Refresh();
 
-            _container.AttackData.RemoveAt(index);
-
-            for (int i = index; i < _container.AttackData.Count; i++)
-                _container.AttackData[i].ID -= 1;
-
-        };*/
+                Debug.Log($"{_nodeName}Node.cs Made!");
+            }
+            catch (System.Exception e)
+            {
+                Debug.Log(e.Message);
+            }
+        }
     }
 
     #region Leaf Template
@@ -122,41 +96,39 @@ public class EnemyNodeMaker : EditorWindow
 
 public class _Name_Node : IBehavior
 {{
-    _Vars_    
-
     public _Name_Node(EnemyBehaviorTree tree, IBehavior parent) : base(tree, parent)
     {{
     }}
 
     public override BehaviorState Execute()
     {{
-        _Actions_        
+
 
         return BehaviorState.Success;
     }}
 }}";
-    public static string LeafNodeScriptableTemplate = $@"using UnityEngine;
-[CreateAssetMenu(fileName ""NewActionNode"", menuName = ""AI/Action Node"")]
-public class ActionNode : ScriptableObject
+    #endregion
+
+    #region Condition Template
+    public static string ConditionNodeTemplate = $@"using UnityEngine;
+
+public class _Name_Node : IBehavior
 {{
-    public string _nodeName = ""New Action"";
-    public string _description = ""description for node's role"";
-    
-    
-}}
-";
-    /*
-     * public class SelectorNode : IBehavior
-{
-    public SelectorNode(EnemyBehaviorTree tree, IBehavior parent) : base(tree, parent)
-    {
-    }
+    public _Name_Node(EnemyBehaviorTree tree, IBehavior parent) : base(tree, parent)
+    {{
+    }}
 
     public override BehaviorState Execute()
-    {
+    {{
+        ConditionCheck();
+
         return BehaviorState.Success;
-    }
-}
-     */
+    }}
+
+    public bool ConditionCheck()
+    {{
+        return true;
+    }}
+}}";
     #endregion
 }
