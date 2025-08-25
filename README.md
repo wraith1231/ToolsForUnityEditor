@@ -15,7 +15,9 @@ Attack Data Editor
 json 파일은 Assets/Data/AttackData.json 입니다. 없으면 자동으로 생성되게 만들었습니다. 다른 위치에 두고싶다면 DataPath 값을 변경해주시면 됩니다.  
 AttackData에 값을 추가하거나 수정하게 된다면 주석으로도 써있지만 LoadJsonData, DrawAttackData 두 함수도 변경해주셔야합니다. 자동으로 하려면 SerializedObject로 해야되는데 그럼 이것저것 꼬이게 되가지고 귀차니즘을 감수하기로 했습니다. 필요하시면 attackdata, container 클래스 둘다 serializedObject 상속시키고 전체적으로 수정해주시면 됩니다.  
 변경한 값이 자동으로 저장되는게 아니라 상단에 save all 버튼을 클릭해주셔야 저장이 됩니다. 저장 안하고 끄면 데이터 다 날라갑니다.  
-이후 필요하면 또 수정 예정  
+이후 필요하면 또 수정 예정
+25-08-25 데이터 List에 Scroll을 추가했습니다.
+
        
 Animtation Editor  
 애니메이션 fbx 파일을 불러들인 후 그 안에 들어있는 rig의 애니메이션 타입(휴머노이드 같은거), 애니메이션에서 발 떨림 현상 줄이기(anti jitter), 전체 애니메이션 클립의 look root rotation, lock root position xz, loop time 값 변경을 일괄적으로 수정할 수 있도록 만들었습니다. 파일은 asset 폴더 안에 있는 파일만 불러들일 수 있습니다. 아니면 오류먹더라구요.  
