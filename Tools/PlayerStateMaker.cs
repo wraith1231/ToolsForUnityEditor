@@ -95,6 +95,12 @@ public class P_State_State : IState
         {
             if (GUILayout.Button("Make Super"))
             {
+                if(_stateName.Length == 0)
+                {
+                    Debug.LogError("Must Input State Name");
+                    return;
+                }
+
                 string path = PlayerStateMaker.PlayerSuperPath + $"P{_stateName}State.cs";
                 MakeState(path);
             }
@@ -104,6 +110,11 @@ public class P_State_State : IState
         {
             if (GUILayout.Button("Make Sub"))
             {
+                if (_stateName.Length == 0)
+                {
+                    Debug.LogError("Must Input State Name");
+                    return;
+                }
                 if (_superName.Length == 0)
                 {
                     Debug.LogError("Sub State must need a super state");
@@ -129,7 +140,6 @@ public class P_State_State : IState
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
-                Debug.Log("uhh");
                 string data = PlayerStateMaker.PlayerStateTemplate;
                 data = data.Replace("_State_", _stateName);
 
