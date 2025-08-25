@@ -20,3 +20,6 @@ AttackData에 값을 추가하거나 수정하게 된다면 주석으로도 써�
 Animtation Editor  
 애니메이션 fbx 파일을 불러들인 후 그 안에 들어있는 rig의 애니메이션 타입(휴머노이드 같은거), 애니메이션에서 발 떨림 현상 줄이기(anti jitter), 전체 애니메이션 클립의 look root rotation, lock root position xz, loop time 값 변경을 일괄적으로 수정할 수 있도록 만들었습니다. 파일은 asset 폴더 안에 있는 파일만 불러들일 수 있습니다. 아니면 오류먹더라구요.  
 직접 애니메이션 만들어서 하는거 아니면 크게 쓸모없는 에디터일 수 도...  
+
+Enemy Node Maker
+아직 만드는 중, 이번엔 player state maker랑 다르게 수정 기능도 넣으려니까 엄청 복잡해지네요...
