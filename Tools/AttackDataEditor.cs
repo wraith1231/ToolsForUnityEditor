@@ -3,6 +3,7 @@ using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
@@ -10,10 +11,11 @@ using UnityEngine;
 [System.Serializable]
 public class AttackData
 {
-    //Enum µ«¿÷¿∏∏È LoadJsonData «‘ºˆ∂˚ DrawAttackData «‘ºˆ µ— ¥Ÿ ºˆ¡§«ÿ¡‡æﬂ«‘
+    //Enum ÎêòÏûàÏúºÎ©¥ LoadJsonData Ìï®ÏàòÎûë DrawAttackData Ìï®Ïàò Îëò Îã§ ÏàòÏ†ïÌï¥Ï§òÏïºÌï®
     public int ID = -1;
     public AttackType AttackType = AttackType.Normal;
     public AttackCollider AttackCollider = AttackCollider.Thrust;
+    public AttackReaction AttackReaction = AttackReaction.Small;
     public float AttackDamage = 1.0f;
 
     public HitEffect HitEffect = HitEffect.Physical;
@@ -44,6 +46,7 @@ public class AttackDataEditor : EditorWindow
     private ReorderableList _reorderableList;
     private int _selected = -1;
     private Vector2 _scrollPosition;
+    private Vector2 _listScrollPosition;
 
     [MenuItem("Tools/Attack Data Editor")]
     static void OpenMenu()
@@ -76,6 +79,9 @@ public class AttackDataEditor : EditorWindow
 
             if (data.HitEffect.IsDefined() == false)
                 data.HitEffect = HitEffect.Physical;
+
+            if (data.AttackReaction.IsDefined() == false)
+                data.AttackReaction = AttackReaction.Small;
         }
         Debug.Log("Load");
     }
@@ -118,7 +124,9 @@ public class AttackDataEditor : EditorWindow
 
         //Left List
         GUILayout.BeginVertical(GUILayout.Width(position.width * 0.3f));
+        _listScrollPosition = GUILayout.BeginScrollView(_listScrollPosition);
         _reorderableList.DoLayoutList();
+        GUILayout.EndScrollView();
         GUILayout.EndVertical();
 
         //Right Data
@@ -183,6 +191,7 @@ public class AttackDataEditor : EditorWindow
         GUILayout.Label($"ID : {data.ID}");
         data.AttackType = (AttackType)EditorGUILayout.EnumPopup("Attack Type", data.AttackType);
         data.AttackCollider = (AttackCollider)EditorGUILayout.EnumPopup("Attack Collider", data.AttackCollider);
+        data.AttackReaction = (AttackReaction)EditorGUILayout.EnumPopup("Attack Reaction", data.AttackReaction);
         data.AttackDamage = EditorGUILayout.FloatField("Attack Damage", data.AttackDamage);
         data.HitEffect = (HitEffect)EditorGUILayout.EnumPopup("Hit Effect", data.HitEffect);
         data.HitSound = EditorGUILayout.TextField("Hit Sound", data.HitSound);
